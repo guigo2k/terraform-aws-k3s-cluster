@@ -46,8 +46,8 @@ EOF
 
 locals {
   k3s_nodes = toset([
-    local.agent_name,
-    local.server_name,
+    local.agent,
+    local.server,
   ])
 }
 
@@ -60,7 +60,7 @@ data "ignition_file" "k3s_metadata" {
   content {
     content = templatefile("${path.module}/scripts/k3s-metadata.sh", {
       name     = each.key
-      hostname = aws_elb.k3s_server.dns_name
+      hostname = aws_elb.server.dns_name
       token    = random_password.token.result
     })
   }
@@ -86,7 +86,7 @@ data "ignition_directory" "k3s_manifests" {
   mode       = 493
 }
 
-data "ignition_config" "k3s_config" {
+data "ignition_config" "k3s" {
   for_each = local.k3s_nodes
 
   directories = [

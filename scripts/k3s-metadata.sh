@@ -12,8 +12,8 @@ k3s_primary() {
 
 k3s_metadata() {
   local key="$1"
-  local value="$2"
-  echo "$key=$value" >> /run/metadata/coreos
+  local val="$2"
+  echo "$key=$val" >> /run/metadata/coreos
 }
 
 k3s_server() {

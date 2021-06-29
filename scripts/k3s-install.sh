@@ -46,13 +46,13 @@ k3s_manifests() {
   local manifests=(${manifests})
   if [[ -n "$manifests" ]]; then
     for file in $${manifests[@]}; do
-      aws_get_parameter $file > $directory/$file.yaml
+      aws_get_parameter "$file" > "$directory"/"$file".yaml
     done
   fi
 }
 
 k3s_kubeconfig() {
-  local name="$(echo ${name} | rev | cut -d- -f2- | rev)-kubeconfig"
+  local name="`echo ${name} | rev | cut -d- -f2- | rev`-kubeconfig"
   local value=`cat /etc/rancher/k3s/k3s.yaml | sed "s|server: .*|server: https://$COREOS_K3S_HOSTNAME:6443|g"`
   aws_put_parameter "$name" "$value"
 }
